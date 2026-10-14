@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>STOP Incoming v1.0.0</title>
+    <title>STOP Incoming v1.0.1</title>
     
     <link rel="manifest" href="manifest.json">
     <meta name="mobile-web-app-capable" content="yes">
@@ -116,7 +116,7 @@
                     <option value="SQF - Paulo Ferreira / Helder Silva">SQF - Paulo Ferreira / Helder Silva</option>
                 </select>
             </div>
-            <div class="form-group-block"><label class="form-label-block">Motivo:</label><textarea id="motivo_1" class="form-textarea motivo-color"></textarea></div>
+            <div class="form-group-block"><label class="form-label-block">Motivo:</label><textarea id="motivo_1" class="form-textarea motivo-color">Incoming Preventivo</textarea></div>
             <div class="form-group-block"><label class="form-label-block">Obs.:</label><textarea id="observacoes_1" class="form-textarea form-textarea-obs obs-color"></textarea></div>
         </div>
 
@@ -146,7 +146,7 @@
                     <option value="SQF - Paulo Ferreira / Helder Silva">SQF - Paulo Ferreira / Helder Silva</option>
                 </select>
             </div>
-            <div class="form-group-block"><label class="form-label-block">Motivo:</label><textarea id="motivo_2" class="form-textarea motivo-color"></textarea></div>
+            <div class="form-group-block"><label class="form-label-block">Motivo:</label><textarea id="motivo_2" class="form-textarea motivo-color">Incoming Preventivo</textarea></div>
             <div class="form-group-block"><label class="form-label-block">Obs.:</label><textarea id="observacoes_2" class="form-textarea form-textarea-obs obs-color"></textarea></div>
         </div>
     </div>
@@ -171,6 +171,18 @@
 
         preencherDataAtual();
 
+        function ajustarTamanhoTextoInicial(el) {
+            el.style.fontSize = "24px";
+            let size = 24;
+            while (el.scrollHeight > el.offsetHeight && size > 10) {
+                size--;
+                el.style.fontSize = size + "px";
+            }
+        }
+
+        ajustarTamanhoTextoInicial(document.getElementById('motivo_1'));
+        ajustarTamanhoTextoInicial(document.getElementById('motivo_2'));
+
         document.querySelectorAll('input[id^="data"]').forEach(el => {
             el.addEventListener('input', function(e) {
                 if(this.id === 'data_1') {
@@ -194,7 +206,17 @@
             motivo2.style.fontSize = this.style.fontSize;
         });
 
-        document.querySelectorAll('textarea:not(.form-textarea-obs):not(#motivo_1)').forEach(el => {
+        const motivo2 = document.getElementById('motivo_2');
+        motivo2.addEventListener('input', function() {
+            this.style.fontSize = "24px";
+            let size = 24;
+            while (this.scrollHeight > this.offsetHeight && size > 10) {
+                size--;
+                this.style.fontSize = size + "px";
+            }
+        });
+
+        document.querySelectorAll('textarea:not(.form-textarea-obs):not(#motivo_1):not(#motivo_2)').forEach(el => {
             el.addEventListener('input', function() {
                 this.style.fontSize = "24px";
                 let size = 24;
@@ -272,6 +294,10 @@
                 if(el.id.includes('responsavel')) el.value = '';
                 else if(el.id.includes('data')) {
                     preencherDataAtual();
+                } else if(el.id.includes('motivo')) {
+                    el.value = 'Incoming Preventivo';
+                    el.style.fontSize = '';
+                    ajustarTamanhoTextoInicial(el);
                 } else {
                     el.value = '';
                     if(el.tagName === 'TEXTAREA') el.style.fontSize = '';
